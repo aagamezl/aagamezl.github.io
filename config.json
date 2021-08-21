@@ -1,0 +1,18 @@
+{
+  "data": {
+    "path": "content",
+    "pattern": "**/*.{md,html}"
+  },
+  "public": "public",
+  "theme": "tale",
+  "paginate": 5,
+  "assets": [
+    "css",
+    "js",
+    "images"
+  ],
+  "site": {
+    "title": "[Code Bites] - aagamezl",
+    "author": "Álvaro José Agámez Licha"
+  }
+}

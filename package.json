@@ -1,0 +1,24 @@
+{
+  "name": "aagamezl.github.io",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "dssg --watch"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/aagamezl/aagamezl.github.io.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/aagamezl/aagamezl.github.io/issues"
+  },
+  "homepage": "https://github.com/aagamezl/aagamezl.github.io#readme",
+  "devDependencies": {
+    "@devnetic/static-site-generator": "^1.0.0"
+  }
+}
