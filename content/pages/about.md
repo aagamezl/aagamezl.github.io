@@ -1,7 +1,7 @@
 ---
 layout: post
 title: About
-author: Chester
+author: Álvaro José Agámez Licha
 permalink: about.html
 ---
 
