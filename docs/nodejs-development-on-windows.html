@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>[Code Bites] - aagamezl - Node.js Development On Windows</title>
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="./css/main.css">
+  <link rel="stylesheet" href="./css/post.css">
+  <link rel="stylesheet" href="./css/code.css">
+  <link rel="stylesheet" href="./css/media-queries.css">
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.7.2/styles/default.min.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Libre+Baskerville:400,400i,700">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" sizes="32x32" href="/tale/assets/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/tale/assets/favicon-16x16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/tale/assets/apple-touch-icon.png">
+</head>
+
+<body>
+  <nav class="nav">
+    <div class="nav-container">
+      <a href="https://github.com/aagamezl" target="_blank">
+        <h2 class="nav-title">aagamezl</h2>
+      </a>
+      <ul>
+        <li>
+          <a href="index.html">Home</a>
+        </li>
+        <li>
+          <a href="about.html">About</a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+  <main>
+    <div class="post">
+      <div class="post-info">
+        <div>Written by Álvaro José Agámez Licha</div>
+        <span>on </span><time datetime="August 08, 2021">2021-08-08 24:00:00</time>
+      </div>
+
+      <h1 class="post-title">Node.js Development On Windows</h1>
+
+      <p>Developing Node.js projects on Windows has not always been welcomed by many developers, sometimes due to inexperience with the operating system; my goal is to demystify this concept and show how this aspect has changed in recent years, showing the necessary tools to do it in the best way.</p>
+<p>Ok, so, are you here to tell me good things about that horrible M$cro$oft operative system?.</p>
+<p><img src="https://media.slid.es/uploads/35433/images/5464137/and-the-answer-is-yes_1_.jpg" alt="And the answer is yes" /></p>
+<h1>Let's Start</h1>
+<p>Windows is not horrible, yes it's true, and it's not perfect, yes it's also true, it's simply different from other operating systems, although it was not the most friendly for developers, but...</p>
+<p>Windows 10 has implemented several useful tools for developers and users, and third-party tools help make developers' lives easier, more productive, and more comfortable.</p>
+<h1>Motivation</h1>
+<p>Windows was my second operative system, my first one was MS-DOS, so I have 26 years working with Windows, from Windows 3.1 to Windows 10.</p>
+<p>I also worked with OSX (3 years aprox) and fulltime on Linux (4 years aprox) so I have experience with other operative systems too.</p>
+<p>I always wanted to work on Windows in the most easy and comfortable way, but until WSL this was a titanic job and sometimes a impossible one, specially when I had to work with native Node.js modules or Ruby.</p>
+<p>But with my efforts to learn how to work on Windows I learned how to overcome some problems and learn more about inner Windows functionalities.</p>
+<p>In recent years I was working 100% on Linux and this was a completely traumatic experience the first days (maybe weeks) but I forced to myself to learn Linux, so with time I was used to solve the common problems on Linux (drivers, VPNs, missing dependencies, etc), but I leave something important behind, my gamer spirit, because to play on Linux is possible, but not the most pleasant experience.</p>
+<p>After regaining my gamer spirit, I double boot my current laptop so I could play video games (I travel, sometimes for months, so carrying two laptops is not an option), but while working on my last project, the client VPN was really complicated to set up. At the same time my Linux boot system stopped working so I decide to go back to Windows again and after the WSL 2 release I just don't want to go back to Linux again.</p>
+<h1>Advices</h1>
+<ul>
+<li>Learn about Windows, especially Powershell and how to perform tasks that sometimes you can't do through the user interface or maybe are easier in the console.</li>
+<li><strong><code>NEVER, EVER</code></strong> use a user with administrator privileges to work; <em><code>most security issues are mitigated using a standard user</code></em>.</li>
+<li>Always use WSL 2, except if you are working on Windows applications.</li>
+<li>Learn to use the shortcuts.</li>
+<li>Use the Windows tools, there are a lot preinstalled.</li>
+</ul>
+<h1>Agenda</h1>
+<ul>
+<li>Easy to use Package Manager.</li>
+<li>Multiple virtual desktops.</li>
+<li>Easy to use Window Snapping​.</li>
+<li>Easy to use Snipping Tool <strong><code>(yes, we always will need some screenshots)</code></strong>.</li>
+<li>Windows Terminal.</li>
+<li>Windows Subsytem For Linux Version 2 <strong><code>(WSL2 for the friends)</code></strong>.</li>
+<li>Docker.</li>
+<li>Microsoft PowerToys.</li>
+</ul>
+<p><img src="https://media.slid.es/uploads/35433/images/5464265/i-have-all-those-things-in-my-favorite-os-many-years-ago_1_.jpg" alt="I have all those thing" /></p>
+<p><img src="https://media.slid.es/uploads/35433/images/5481849/win10_skype_320x320.0_1_.gif" alt="And you can also do it in Windows" /></p>
+<h1>An Easy to use Package Manager</h1>
+<p>Developers love package managers to quickly find and install third-party applications. In Windows the developers have at their disposal different package managers, Chocolatey and Scoop are very good options, in this talk I will show you Scoop.</p>
+<pre class="hljs"><code>PS C:\&gt; Set-ExecutionPolicy RemoteSigned -scope CurrentUser
+PS C:\&gt; iwr -useb get.scoop.sh | iex
+</code></pre>
+<p>Scoop is really easy to use, and you can install a lot of useful packages.</p>
+<pre class="hljs"><code>An Easy to use Package Manager
+PS C:\&gt; scoop install git nvm
+PS C:\&gt; scoop uninstall git nvm
+PS C:\&gt; scoop list
+</code></pre>
+<p>You can use an <a href="https://gist.github.com/aagamezl/1d3de28d643f4c3d6976586785376161">automatic script</a> with all the packages you need to install and configurate your development environment in a breeze.</p>
+<pre class="hljs"><code>PS &gt; &amp; <span class="hljs-string">&quot;C:/path/to/the/script/scoop-environment-setup.ps1&quot;</span>
+</code></pre>
+<h1>Multiple Virtual Desktops</h1>
+<p>I find this feature extremely useful. Imagine that you want to have multiple desktops configured with certain apps, etc and be able to toggle through them as needed.</p>
+<p>Virtual desktops are very straightforward in Windows, you can use the keyboard or the mouse to use them.</p>
+<p>You can click in the <code>Task View</code> icon in the taskbar <code>(or use Windows Key + Tab)</code> to access the virtual desktops panel, and create, modify or delete them.</p>
+<p><img src="https://media.slid.es/uploads/35433/images/5487463/pasted-from-clipboard.png" alt="Task View" /></p>
+<p>But I really prefer to do it with the keyboard, to add a Virtual Desktop use the shortcut <strong><code>Windows Key + Ctrl + D</code></strong>.</p>
+<p>To Delete a virtual desktop with the keyboard you can use <strong><code>Windows Key + Ctrl + F4</code></strong>.</p>
+<p>To switch from one virtual desktop to another you can use Windows Key + CTRL + Left arrow and <strong><code>Windows key + CTRL + Right arrow</code></strong>.</p>
+<p>To move application between virtual desktop, you have to do it through the <strong><code>Task View</code></strong> panel.</p>
+<p><img src="https://media.slid.es/uploads/35433/images/5487551/pasted-from-clipboard.png" alt="Move a Virtual Desktop" /></p>
+<h1>Window Snapping​</h1>
+<p>Snap, a windows management technique, has some cool new features in Windows 10. You can now snap windows vertically—one on top of each other, instead of side-by-side—or snap windows to a 2×2 grid.</p>
+<ul>
+<li><strong><code>Windows Key + Left arrow</code></strong>: Snap current window to the left side of the screen.</li>
+<li><strong><code>Windows Key + Right arrow</code></strong>: Snap current window the the right side of the screen.</li>
+<li><strong><code>Windows Key + Up arrow</code></strong>: Snap current window to the top of the screen.</li>
+<li><strong><code>Windows Key + Down arrow</code></strong>: Snap current window to the bottom of the screen.</li>
+</ul>
+<h1>Snipping Tool​</h1>
+<p>Sometimes we need some screenshots, for example to share it with a colleague or to report some bug; Windows have a cool an easy to use Snipping tool.  Just type snipping with the global search option (like Synapse in Linux or Alfred or Spotlight in OS X); use Windows key + S to access the global search option.</p>
+<p><img src="https://media.slid.es/uploads/35433/images/5487790/pasted-from-clipboard.png" alt="Snipping Tool" /></p>
+<p>At this point, you should know that there are four types of snips provided by the tool.</p>
+<ul>
+<li><strong><code>Free Form Snip</code></strong>: You can draw a line or anything as per your need around the area that you want to capture.</li>
+<li><strong><code>Rectangular Snipp</code></strong>: Here you have to hold and drag the cursor around the area to form a rectangular snip.</li>
+<li><strong><code>Window Snipp</code></strong>: This option will allow you to capture a dialog box or a browser window.</li>
+<li><strong><code>Full – Screen Snipp</code></strong>: It will capture the full screen.</li>
+</ul>
+<p>But there is more, if this Snipping tool is good, the new Windows 10 Snipping tool is even better, to access it you must press <strong><code>Windows key + Shift + S</code></strong> or searching by the name Snip &amp; Sketch; this is the ultimate Snipping tool in Windows.</p>
+<h1>Windows Terminal</h1>
+<p>Windows Terminal is a new, modern, feature-rich, productive terminal application for command-line users. It includes many of the features most frequently requested by the Windows command-line community including support for tabs, rich text, globalization, configurability, theming &amp; styling, and more.</p>
+<p>Configuring Windows Terminal is not the most pleasant task, you have to do it directly in the configuration file, although this will change in future versions.</p>
+<p>Go to the dropdown menu and choose the Settings option.</p>
+<p><img src="https://media.slid.es/uploads/35433/images/7730582/windows-terminal.png" alt="Windows Terminal Settings" /></p>
+<pre class="hljs"><code><span class="hljs-comment">// For documentation on these settings, see: https://aka.ms/terminal-documentation</span>
+<span class="hljs-punctuation">{</span>
+  <span class="hljs-attr">&quot;$schema&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;https://aka.ms/terminal-profiles-schema&quot;</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-comment">// I set WSL like my default profile - aagamezl</span>
+  <span class="hljs-attr">&quot;defaultProfile&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;{2c4de342-38b7-51cf-b940-2309a097f518}&quot;</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;profiles&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+    <span class="hljs-attr">&quot;defaults&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+    <span class="hljs-punctuation">}</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;list&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span>
+      <span class="hljs-punctuation">{</span>
+        <span class="hljs-comment">// Make changes here to the wsl.exe profile.</span>
+        <span class="hljs-attr">&quot;guid&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;{2c4de342-38b7-51cf-b940-2309a097f518}&quot;</span><span class="hljs-punctuation">,</span>
+        <span class="hljs-attr">&quot;hidden&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-keyword">false</span><span class="hljs-punctuation">,</span>
+        <span class="hljs-attr">&quot;name&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;Ubuntu&quot;</span><span class="hljs-punctuation">,</span>
+        <span class="hljs-comment">// We need to set a good color scheme - aagamezl</span>
+        <span class="hljs-attr">&quot;colorScheme&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;Solarized Dark&quot;</span><span class="hljs-punctuation">,</span>
+        <span class="hljs-comment">// We need to set our cool font - aagamezl</span>
+        <span class="hljs-attr">&quot;fontFace&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;FuraMono Nerd Font&quot;</span><span class="hljs-punctuation">,</span>
+        <span class="hljs-attr">&quot;fontSize&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">11</span><span class="hljs-punctuation">,</span>
+        <span class="hljs-attr">&quot;source&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;Windows.Terminal.Wsl&quot;</span><span class="hljs-punctuation">,</span>
+        <span class="hljs-comment">// This line set the initial path to the user&#x27;s home directory - aagamezl</span>
+        <span class="hljs-attr">&quot;commandline&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;wsl.exe ~&quot;</span>  
+      <span class="hljs-punctuation">}</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-punctuation">]</span>
+  <span class="hljs-punctuation">}</span><span class="hljs-punctuation">,</span>
+<span class="hljs-punctuation">}</span>
+</code></pre>
+<p>To see the available color schemes and also to learn how to create our own color schemes, you have to go to the default settings section, for this we must press the <strong><code>Alt key</code></strong> before selecting the Settings option.</p>
+<p>Additionally we can obtain new color schemes at <a href="https://terminalsplash.com/">TerminalSplash</a>.</p>
+<h1>Windows Subsytem For Linux</h1>
+<p>The Windows Subsystem for Linux lets developers run GNU/Linux environment (including most command-line tools, utilities, and applications) directly on Windows, unmodified, without the overhead of a virtual machine.</p>
+<ol>
+<li>
+<p><code>Enable-WindowsOptionalFeature -Online -FeatureName Microsoft-Windows-Subsystem-Linux</code></p>
+</li>
+<li>
+<p><code>dism.exe /online /enable-feature /featurename:VirtualMachinePlatform /all</code></p>
+</li>
+<li>
+<p>Download and install <a href="https://aka.ms/wsl2kernel">WSL 2 Linux Kernel</a>.</p>
+</li>
+<li>
+<p><code>wsl.exe --set-default-version 2</code></p>
+</li>
+<li>
+<p>Download a Linux Distro from Windows Store (I use Ubuntu LTS).</p>
+</li>
+<li>
+<p>Lauch your Distro and create you user in WSL <code>(If you get error &quot;WslRegisterDistribution failed with error: 0x8000000d&quot;, execute step 1 again)</code>.</p>
+</li>
+<li>
+<p>Verify if the installed version is running in version 2 with <code>wsl -l -v</code>, if not, execute this command: <code>wsl.exe --set-version Ubuntu 2</code></p>
+</li>
+</ol>
+<p>Open the Microsoft Store and choose your favorite Linux distribution.</p>
+<p><img src="https://media.slid.es/uploads/35433/images/5487830/pasted-from-clipboard.png" alt="Windows Store Linux On Windows" /></p>
+<p>Now we can configure our environment in the same way we do in Linux, I personally love <a href="https://github.com/tmux/tmux/wiki">tmux</a>, <a href="https://www.zsh.org/">zsh</a> and <a href="https://ohmyz.sh/">Oh My Zsh</a>, so I ALWAYS install them.</p>
+<pre class="hljs"><code>$ sudo apt-get install tmux zsh​
+</code></pre>
+<p>If you like tmux too and want more information about how to use it, this <a href="https://www.howtogeek.com/671422/how-to-use-tmux-on-linux-and-why-its-better-than-screen/">tutorial</a> is a good starting point.</p>
+<p>To make zsh your default shell you have to edit the <code>~/.bashrc</code> file and add the following to the beginning of the file:</p>
+<pre class="hljs"><code>$ vim ~/.bashrc
+
+<span class="hljs-comment"># if running in terminal...</span>
+<span class="hljs-keyword">if</span> <span class="hljs-built_in">test</span> -t 1; <span class="hljs-keyword">then</span>
+    <span class="hljs-comment"># ...start zsh</span>
+    <span class="hljs-built_in">exec</span> zsh
+<span class="hljs-keyword">fi</span>
+
+$ <span class="hljs-built_in">source</span> ~/.bashrc
+</code></pre>
+<p>Now we need to install and configure Oh My Zsh, <a href="https://github.com/romkatv/powerlevel10k">powerlevel10k</a> theme, <a href="https://github.com/ryanoasis/nerd-fonts/blob/master/patched-fonts/FiraMono/Regular/complete/Fura%20Mono%20Regular%20Nerd%20Font%20Complete.otf?raw=true">FuraMono</a> font and some plugins:</p>
+<pre class="hljs"><code>$ sh -c <span class="hljs-string">&quot;<span class="hljs-subst">$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)</span>&quot;</span>
+
+$ git <span class="hljs-built_in">clone</span> https://github.com/romkatv/powerlevel10k.git ~/.oh-my-zsh/themes/powerlevel10k
+
+$ git <span class="hljs-built_in">clone</span> https://github.com/zsh-users/zsh-autosuggestions.git ~/.oh-my-zsh/plugins/zsh-autosuggestions
+
+$ git <span class="hljs-built_in">clone</span> https://github.com/zsh-users/zsh-syntax-highlighting.git ~/.oh-my-zsh/plugins/zsh-syntax-highlighting
+</code></pre>
+<p>Now we need to assign our theme, plugins and later we configure the theme inself.</p>
+<pre class="hljs"><code>$ vim ~/.zshrc
+<span class="hljs-built_in">export</span> TERM=<span class="hljs-string">&quot;xterm-256color&quot;</span>
+ZSH_THEME=<span class="hljs-string">&quot;powerlevel10k/powerlevel10k&quot;</span>
+POWERLEVEL9K_MODE=<span class="hljs-string">&quot;nerdfont-complete&quot;</span>
+
+ENABLE_CORRECTION=<span class="hljs-string">&quot;true&quot;</span>
+
+plugins=(git zsh-autosuggestions zsh-syntax-highlighting)
+
+$ <span class="hljs-built_in">source</span> ~/.zshrc
+$ p10k configure
+</code></pre>
+<p>Now we can install and use different versions of Node.js using <a href="https://github.com/nvm-sh/nvm">NVM</a>.</p>
+<pre class="hljs"><code>$ curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.3/install.sh | bash
+
+$ vim ~/.zshrc
+
+<span class="hljs-built_in">export</span> NVM_DIR=<span class="hljs-string">&quot;<span class="hljs-variable">$HOME</span>/.nvm&quot;</span>
+[ -s <span class="hljs-string">&quot;<span class="hljs-variable">$NVM_DIR</span>/nvm.sh&quot;</span> ] &amp;&amp; \. <span class="hljs-string">&quot;<span class="hljs-variable">$NVM_DIR</span>/nvm.sh&quot;</span>  <span class="hljs-comment"># This loads nvm</span>
+[ -s <span class="hljs-string">&quot;<span class="hljs-variable">$NVM_DIR</span>/bash_completion&quot;</span> ] &amp;&amp; \. <span class="hljs-string">&quot;<span class="hljs-variable">$NVM_DIR</span>/bash_completion&quot;</span>  <span class="hljs-comment"># This loads nvm bash_completion</span>
+
+$ <span class="hljs-built_in">source</span> ~/.zshrc
+</code></pre>
+<p>Now we need to configure VS Code, a mandatory extension is <a href="https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-wsl">Remote - WSL</a>, this extension is necessary to work with WSL, but personally I recommend <a href="https://marketplace.visualstudio.com/items?itemName=Shan.code-settings-sync">Settings Sync</a> and <a href="https://marketplace.visualstudio.com/items?itemName=kruemelkatze.vscode-dashboard">Project Dashboard</a>, the first to synchronize our configuration and the last to create shortcuts to our projects.</p>
+<p>Sometimes the network between WSL image and Windows stop to work, please execute this command to fix this:</p>
+<pre class="hljs"><code>PS &gt; wsl --shutdown
+</code></pre>
+<h1>Docker</h1>
+<p>Before WSL 2, working with Docker on Windows was not a very easy option, but now everything works like a charm, thanks to the fact that WSL 2 actually includes a full Linux kernel and Microsoft worked hand by hand with the Docker Team to make this integration possible.</p>
+<p>The first step is download and install <a href="https://docs.docker.com/docker-for-windows/wsl">Docker Desktop 2.3.0.2</a> or a later release and restart your computer.</p>
+<p>Now we need to add our local user to the <code>docker-users</code> group to be able to run Docker Desktop.  To do this we need to run the following commands in a Powershell console with administrator privileges.</p>
+<pre class="hljs"><code><span class="hljs-comment"># With this Powershell command we get our username</span>
+PS &gt; Get-LocalGroupMember -Group <span class="hljs-string">&quot;Users&quot;</span>
+PS &gt; Add-LocalGroupMember -Group <span class="hljs-string">&quot;docker-users&quot;</span> -Member <span class="hljs-string">&quot;COMPUTER-ID\username&quot;</span>
+</code></pre>
+<p>Because we will Docker with a standard user, we need to execute <code>docker-compose</code> with <code>sudo</code> inside WSL.</p>
+<pre class="hljs"><code>$  sudo docker-compose up -d
+</code></pre>
+<h1>PowerToys</h1>
+<p><a href="https://github.com/microsoft/PowerToys">Microsoft PowerToys</a> is a set of utilities for power users to tune and streamline their Windows experience for greater productivity. Inspired by the <a href="https://en.wikipedia.org/wiki/Microsoft_PowerToys">Windows 95 era PowerToys project</a>, this reboot provides power users with ways to squeeze more efficiency out of the Windows 10 shell and customize it for individual workflows.</p>
+<p><a href="https://aka.ms/PowerToysOverview_ColorPicker">ColorPicker</a> is a simple and quick color picker with <code>Win + Shift + C</code>. Color Picker allows to pick colors from any currently running application and automatically copies the HEX or RGB values to your clipboard.</p>
+<p><a href="https://aka.ms/PowerToysOverview_FancyZones">FancyZones</a> is a window manager that makes it easy to create complex window layouts and quickly position windows into those layouts.</p>
+<p><a href="https://aka.ms/PowerToysOverview_FileExplorerAddOns">File Explorer</a> add-ons will enable SVG icon rendering and Preview Pane additions for File Explorer.</p>
+<p><a href="https://aka.ms/PowerToysOverview_ImageResizer">Image Resizer</a> is a Windows Shell Extension for quickly resizing images. With a simple right click from File Explorer, resize one or many images instantly.</p>
+<p><a href="https://aka.ms/PowerToysOverview_KeyboardManager">Keyboard Manager</a> allows you to customize the keyboard to be more productive by remapping keys and creating your own keyboard shortcuts.</p>
+<p><a href="https://aka.ms/PowerToysOverview_PowerRename">PowerRename</a> is a Windows Shell Extension for advanced bulk renaming using search and replace or regular expressions.</p>
+<p><a href="https://aka.ms/PowerToysOverview_PowerToysRun">PowerToys Run</a> is a new toy in PowerToys that can help you search and launch your app instantly with a simple Alt+Space and start typing! It is open source and modular for additional plugins.</p>
+<p><a href="https://aka.ms/PowerToysOverview_ShortcutGuide">Windows key shortcut</a> guide appears when a user holds the Windows key down for more than one second and shows the available shortcuts for the current state of the desktop.</p>
+
+    </div>
+
+    <div class="pagination">
+        <a href="changing-the-gnome-shell-login-background.html" class="left arrow">&#8592;</a>
+
+        <a href="static-site-generator-how-to.html" class="right arrow">&#8594;</a>
+      <a href="#" class="top">Top</a>
+    </div>
+  </main>
+
+  <footer>
+    <span>
+      <time datetime="2020-09-16 05:49:07 +0000">2020</time>
+      <span>Álvaro Agámez. Made with Love and Passion</span>
+      <a href="https://github.com/aagamezl" target="_blank">aagamezl</a>.
+    </span>
+  </footer>
+</body>
+
+</html>
