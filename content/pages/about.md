@@ -7,6 +7,10 @@ permalink: about.html
 
 I'm a senior software engineer from Colombia, with a passion for cutting edge technologies, good development practices, and implementing techniques to improve software quality. I love attending technology meetings and conferences and I'm a co-organizer of the Brodevhood Technology Meetup in Medellín. On the other hand, I love reading comics and manga, dogs (I have 2 Huskies and a Labrador), video games and listening to music.
 
+## Contact
+
+If you want or need to contact me, send me an [email](mailto:alvaroagamez@outlook.com) and I will gladly read you.
+
 This site is created with my own static site generator, is blazing fast and easy to install and use, please take a look, is free and I'm sure that you will enjoy using it.
 
 ## Contribute

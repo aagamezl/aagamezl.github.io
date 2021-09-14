@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>[Code Bites] - aagamezl - Static Site Generator - How I Created</title>
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="./css/main.css">
+  <link rel="stylesheet" href="./css/post.css">
+  <link rel="stylesheet" href="./css/code.css">
+  <link rel="stylesheet" href="./css/media-queries.css">
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.7.2/styles/default.min.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Libre+Baskerville:400,400i,700">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" sizes="32x32" href="/tale/assets/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/tale/assets/favicon-16x16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/tale/assets/apple-touch-icon.png">
+</head>
+
+<body>
+  <nav class="nav">
+    <div class="nav-container">
+      <a href="https://github.com/aagamezl" target="_blank">
+        <h2 class="nav-title">aagamezl</h2>
+      </a>
+      <ul>
+        <li>
+          <a href="about.html">About</a>
+        </li>
+        <li>
+          <a href="projects.html">Projects</a>
+        </li>
+        <li>
+          <a href="index.html">Home</a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+  <main>
+    <div class="post">
+      <div class="post-info">
+        <div>Written by Álvaro José Agámez Licha</div>
+        <span>on </span><time datetime="September 12, 2021">2021-09-12 24:00:00</time>
+      </div>
+
+      <h1 class="post-title">Static Site Generator - How I Created</h1>
+
+      <h1>Inception</h1>
+<p>For a long time I had wanted to create my personal blog, I thought about using an online blogging system like dev.to, or using a static generator like Jekyl, Hugo or, the like, but I don't know, none of them motivated me.</p>
+<p>So I decided to do what I almost always do, make my own tool to generate my personal blog and at the same time publish it with an Open Source project.</p>
+<p>The first thing I did was think about how I wanted this generator to work, what functionalities it would have, and how it should be used. Among the main functionality should be something that I give a lot of value, and that is simplicity, both in use and in installation, taking this as the main functionality, I made a list of what I wanted to have.</p>
+<ul>
+<li>Ease of use and installation.</li>
+<li>High speed of compilation/generation of content.</li>
+<li>Small size.</li>
+<li>Few dependencies.</li>
+<li>Written entirely in JavaScript.</li>
+<li>Support for different themes.</li>
+<li>Support for different template systems.</li>
+<li>Live reload.</li>
+<li>A CLI to manage the generator.</li>
+</ul>
+<p>With this list of functionalities, I started the mental design of the project and when I say mental design I mean that I try to imagine how the application will be organized, what packages I can use to solve some problems and I begin to imagine how I would like to use the application if I were a user.</p>
+<p>After a few hours of mental process, I started to write some lines of code, the basic structure of the project, I added some functions that I knew I would need, but it was time to start working on the basis of the project, which is basically converting content (markdown in my case) in a series of HTML, CSS and JavaScript files and here I must confess that I had no idea how other similar systems worked or solved the problems that I wanted to solve, so I started to investigate some of the static content generators most popular, and I focused on Jekyl and Hugo.</p>
+<h1>Discovery</h1>
+<p>Almost immediately I discovered that there was something called Frontmatter which is used to add metadata in Markdown files, so I had to add a new item to my list of functionalities since this metadata block is something that adds a lot of important information to the content that includes it as well as for the system in general.</p>
+<p>At first, I tried to parse both the Markdown and the Frontmatter on my own, but after valuable hours spent on this task, I realized that it was not worth investing time and energy on this, since it was not within the scope of the project, so after some time searching in NPM I decided on two quite popular packages to perform these tasks, well, actually I chose three packages since I had to use an additional one to format the code blocks:</p>
+<ol>
+<li>Markdown parser: <a href="https://www.npmjs.com/package/markdown-it">markdown-it</a></li>
+<li>Frontmatter parser: <a href="https://www.npmjs.com/package/gray-matter">gray-matter</a></li>
+<li>Syntax highlighter: <a href="https://www.npmjs.com/package/highlight.js">highlight.js</a></li>
+</ol>
+<h1>Development</h1>
+<p>Ok, at this point I had already solved the content generation part, now there was only a little code left to work with the file system and for this, I chose <a href="https://www.npmjs.com/package/glob">glob</a>, as it is perhaps the best option for working with file search patterns and automatic search depth in paths.</p>
+<p>After a few hours of development, trial and error, debugging, etc. I managed to get the base of the generator, the part that takes care of almost all the &quot;magic&quot; by calling it somehow:</p>
+<pre class="hljs"><code><span class="hljs-comment">/**
+ * Generate the site structure, compile the markdown and compile the content
+ *
+ * <span class="hljs-doctag">@param</span> {<span class="hljs-type">object</span>} <span class="hljs-variable">data</span>
+ * <span class="hljs-doctag">@param</span> {<span class="hljs-type">object</span>} <span class="hljs-variable">config</span>
+ * <span class="hljs-doctag">@return</span> {<span class="hljs-type">object</span>}
+ */</span>
+<span class="hljs-keyword">const</span> generateSite = <span class="hljs-keyword">async</span> (data, config) =&gt; {
+  data = <span class="hljs-title class_">Array</span>.<span class="hljs-title function_">isArray</span>(data) ? data : [data]
+
+  <span class="hljs-keyword">return</span> data.<span class="hljs-title function_">map</span>(parseFrontmatter)
+    .<span class="hljs-title function_">map</span>(compileMarkdown)
+    .<span class="hljs-title function_">filter</span>(<span class="hljs-function"><span class="hljs-params">page</span> =&gt;</span> page.<span class="hljs-property">layout</span> !== <span class="hljs-literal">undefined</span>)
+    .<span class="hljs-title function_">sort</span>(sortContent)
+    .<span class="hljs-title function_">reduce</span>(compileContent, {})
+}
+</code></pre>
+<p>It seems like little code for a static content generator, and yes, there is a lot more code that makes everything work properly to get our content compiled correctly, but that function is the heart of the system.</p>
+<p>A more general view of the system would be the <code>buildSite</code> function, which is responsible for orchestrating all the operations necessary to generate the content.</p>
+<pre class="hljs"><code><span class="hljs-comment">/**
+ * Build the site; this function is called by the the command line option and by
+ * chokidar initalization when the build directory is empty.
+ *
+ * <span class="hljs-doctag">@param</span> {<span class="hljs-type">object</span>} <span class="hljs-variable">config</span>
+ * <span class="hljs-doctag">@return</span> {<span class="hljs-type">boolean</span>}
+ */</span>
+<span class="hljs-keyword">const</span> buildSite = <span class="hljs-keyword">async</span> (config) =&gt; {
+  <span class="hljs-comment">// Get the content data to be compiled</span>
+  <span class="hljs-keyword">const</span> data = <span class="hljs-keyword">await</span> <span class="hljs-title function_">getData</span>(
+    <span class="hljs-title function_">getPath</span>(config.<span class="hljs-property">content</span>.<span class="hljs-property">path</span>),
+    <span class="hljs-title function_">getGlobPattern</span>(config.<span class="hljs-property">content</span>.<span class="hljs-property">files</span>)
+  )
+
+  <span class="hljs-keyword">const</span> site = <span class="hljs-keyword">await</span> <span class="hljs-title function_">generateSite</span>(data, config)
+
+  <span class="hljs-keyword">await</span> <span class="hljs-title function_">writeContent</span>({ ...site, ...config.<span class="hljs-property">site</span> }, config)
+  <span class="hljs-keyword">await</span> <span class="hljs-title function_">copyAssets</span>(config)
+
+  <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>
+}
+</code></pre>
+<p>The whole system is made up of around 900 lines of code (including JSDoc blocks, so the number of actual lines of code is much less); If you want to take a look at all the code of the system you can do it in its <a href="https://github.com/aagamezl/static-site-generator">GitHub Repository</a>.</p>
+<p>Another key point of the system is the CLI to handle all the available options, such as generating the initial scaffolding, compiling the content, or launching the development server with live reloading. For this task, I chose <a href="https://www.npmjs.com/package/@devnetic/cli">@devnetic/cli</a> one of my own NPM packages, which makes building CLI applications really easy and fast.</p>
+<pre class="hljs"><code><span class="hljs-keyword">const</span> { format, getParams, usage } = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;@devnetic/cli&#x27;</span>)
+
+<span class="hljs-comment">// Get the command line params</span>
+<span class="hljs-keyword">const</span> params = <span class="hljs-title function_">getParams</span>()
+
+<span class="hljs-comment">// Show the help menu when the command line tool is called with -h or --help param</span>
+<span class="hljs-keyword">if</span> (params.<span class="hljs-property">help</span> || params.<span class="hljs-property">h</span> || <span class="hljs-title class_">Object</span>.<span class="hljs-title function_">keys</span>(params).<span class="hljs-property">length</span> === <span class="hljs-number">0</span>) {
+    <span class="hljs-title function_">usage</span>(<span class="hljs-string">&#x27;Usage: ssg &lt;option&gt; [modifier]&#x27;</span>)
+    .<span class="hljs-title function_">option</span>([<span class="hljs-string">&#x27;-b&#x27;</span>, <span class="hljs-string">&#x27;--build&#x27;</span>], <span class="hljs-string">&#x27;\t\t\tRun the build process&#x27;</span>)
+    .<span class="hljs-title function_">option</span>([<span class="hljs-string">&#x27;-c&#x27;</span>, <span class="hljs-string">&#x27;--clean [-y, --yes]&#x27;</span>], <span class="hljs-string">&#x27;\tClean the build directory&#x27;</span>)
+    .<span class="hljs-title function_">option</span>([<span class="hljs-string">&#x27;-n&#x27;</span>, <span class="hljs-string">&#x27;--new&#x27;</span>], <span class="hljs-string">&#x27;\t\t\tGenerate a new site&#x27;</span>)
+    .<span class="hljs-title function_">option</span>([<span class="hljs-string">&#x27;-v&#x27;</span>, <span class="hljs-string">&#x27;--version&#x27;</span>], <span class="hljs-string">&#x27;\t\tDisplay version&#x27;</span>)
+    .<span class="hljs-title function_">option</span>([<span class="hljs-string">&#x27;-w&#x27;</span>, <span class="hljs-string">&#x27;--watch&#x27;</span>], <span class="hljs-string">&#x27;\t\t\tRun the build process watching changes&#x27;</span>)
+    .<span class="hljs-title function_">option</span>([<span class="hljs-string">&#x27;-h&#x27;</span>, <span class="hljs-string">&#x27;--help&#x27;</span>], <span class="hljs-string">&#x27;\t\t\tShow this help&#x27;</span>)
+    .<span class="hljs-title function_">epilog</span>(<span class="hljs-string">`Copyright <span class="hljs-subst">${<span class="hljs-keyword">new</span> <span class="hljs-built_in">Date</span>().getFullYear()}</span> - Static Site Generator`</span>)
+    .<span class="hljs-title function_">show</span>()
+
+    process.<span class="hljs-title function_">exit</span>(<span class="hljs-number">0</span>)
+}
+
+<span class="hljs-comment">// Create a text formmater</span>
+<span class="hljs-keyword">const</span> errorLog = format.<span class="hljs-title function_">bold</span>().<span class="hljs-property">red</span>
+
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-title function_">errorLog</span>(<span class="hljs-string">&#x27;This error message will be red and bold&#x27;</span>))
+</code></pre>
+<p>Last but not least, for the tasks managing the filesystem, real-time file change monitoring, and development server with live reload I chose the NPM packages <a href="https://www.npmjs.com/package/chokidar">Chokidar</a>, <a href="https://www.npmjs.com/package/fs-extra">fs-extra</a> and <a href="https://www.npmjs.com/package/live-server">live-server</a>  respectively.</p>
+<h1>Usage</h1>
+<p>Ok, now that I have outlined how I built and composed the system, let's see how it would be installed and used; Being an NPM package we can install it like any other:</p>
+<pre class="hljs"><code>$ npm i -D @devnetic/static-site-generator
+</code></pre>
+<p>Now we have access to the command <code>ssg</code> (an acronym for static site generator), with which we can perform all the available tasks in the system. The first thing we would like to do is generate the initial scaffolding for our site, for which we will use the <code>npx ssg -n</code> command.</p>
+<p>This will generate the following scaffolding:</p>
+<pre class="hljs"><code>- content (or whatever name that you provide <span class="hljs-keyword">in</span> the creation step)
+|-- pages
+|-- posts
+- public (or whatever name that you provide <span class="hljs-keyword">in</span> the creation step)
+- template-system
+- themes
+|-- default
+</code></pre>
+<p>Some of these directories are generated by convention and cannot be changed, such as <code>template-system</code> and<code> themes</code>, while the others can be changed at the time of the initial scaffolding creation or later manually, renaming the directories and changing the corresponding values in the configuration file.</p>
+<p>The content that the generator will use for our sites must be added in 2 different directories, each of which has a well-defined function; these directories are pages and post respectively.</p>
+<ul>
+<li>
+<p><code>page directory</code>: This directory contains the main pages, such as home, about, contact, projects, or any main content that should generate a navigation element in the main menu.</p>
+</li>
+<li>
+<p><code>post directory</code>: This directory contains the posts or secondary content of the site and it will not generate a menu in the main menu.</p>
+</li>
+</ul>
+<p>Now we can generate the site with the command <code>npx ssg -b</code> or with the command<code> npx ssg -w</code>; the last one I will run the developer's server and it will generate the site as long as the build directory is empty, otherwise it will start with the content that already exists.</p>
+<p>To clean all the contents of the build directory, we can use the command <code>npx ssg -c</code>; this operation is destructive and cannot be undone, so confirmation will be required before the operation is performed. In case we want to skip the commit, we can use the <code>-y</code> modify, so the full command would be <code>npx ssg -c -y</code>.</p>
+
+    </div>
+
+    <div class="pagination">
+
+        <a href="nodejs-development-on-windows.html" class="right arrow">&#8594;</a>
+      <a href="#" class="top">Top</a>
+    </div>
+  </main>
+
+  <footer>
+    <span>
+      <time datetime="2020-09-16 05:49:07 +0000">2020</time>
+      <span>Álvaro Agámez. Made with Love and Passion</span>
+      <a href="https://github.com/aagamezl" target="_blank">aagamezl</a>.
+    </span>
+  </footer>
+</body>
+
+</html>
