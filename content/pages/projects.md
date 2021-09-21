@@ -7,9 +7,11 @@ permalink: projects.html
 
 # Open Source Projects
 
-- [kiirusORM](https://github.com/aagamezl/kiirus-orm): Relational Database ORM for Node.js.
+- [@devnetic/KiirusORM](https://github.com/aagamezl/kiirus-orm): Relational Database ORM for Node.js.
 
-- [Static Site Generator](https://github.com/aagamezl/static-site-generator): A static site generator for Node.js.
+- [@devnetic/static-site-generator](https://github.com/aagamezl/static-site-generator): A static site generator for Node.js.
+
+- [@devnetic/KiirusDB](https://github.com/devnetic/kiirus-db): A document-oriented NoSQL database, written entirely in JavaScript (the project is on standby for some time while I’m working in my other projects).
 
 - [@devnetic/cli](https://www.npmjs.com/package/@devnetic/cli): A tool for rapidly parse command line arguments and create command line applications.
 
@@ -18,8 +20,6 @@ permalink: projects.html
 - [@devnetic/utils](https://www.npmjs.com/package/@devnetic/utils): Common utils for every single day tasks.
 
 - [@devnetic/router](https://www.npmjs.com/package/@devnetic/router): Zero-dependencies router to match URLs.
-
-- [@devnetic/kiirusDB](https://github.com/devnetic/kiirus-db): A document-oriented NoSQL database, written entirely in JavaScript (the project is on standby for some time while I’m working in my other projects).
 
 - [@devnetic/fetch](https://www.npmjs.com/package/@devnetic/fetch): The Fetch package provides an interface for fetching resources (including across the network). This package it's a wrapper around http|https Node.js native packages.
 

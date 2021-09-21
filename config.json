@@ -1,4 +1,13 @@
 {
+  "site": {
+    "title": "[Code Bites] - aagamezl",
+    "author": "Álvaro José Agámez Licha",
+    "github": {
+      "url": "https://github.com/aagamezl",
+      "username": "aagamezl"
+    },
+    "linkedin": "https://www.linkedin.com/in/alvarojoseagamezlicha"
+  },
   "content": {
     "path": "content",
     "files": [
@@ -43,8 +52,8 @@
     ".wma",
     ".aac"
   ],
-  "site": {
-    "title": "[Code Bites] - aagamezl",
-    "author": "Álvaro José Agámez Licha"
+  "server": {
+    "host": "127.0.0.1",
+    "port": "8080"
   }
 }

@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>[Code Bites] - aagamezl - Abstract Classes in JavaScript</title>
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="./css/main.css">
+  <link rel="stylesheet" href="./css/post.css">
+  <link rel="stylesheet" href="./css/code.css">
+  <link rel="stylesheet" href="./css/media-queries.css">
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.7.2/styles/default.min.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Libre+Baskerville:400,400i,700">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" sizes="32x32" href="/tale/assets/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/tale/assets/favicon-16x16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/tale/assets/apple-touch-icon.png">
+</head>
+
+<body>
+  <nav class="nav">
+    <div class="nav-container">
+      <a href="https://github.com/aagamezl" target="_blank">
+        <h2 class="nav-title">aagamezl</h2>
+      </a>
+      <ul>
+        <li>
+          <a href="projects.html">Projects</a>
+        </li>
+        <li>
+          <a href="about.html">About</a>
+        </li>
+        <li>
+          <a href="index.html">Home</a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+  <main>
+    <div class="post">
+      <div class="post-info">
+        <div>Written by Álvaro José Agámez Licha</div>
+        <span>on </span><time datetime="September 20, 2021">2021-09-20 24:00:00</time>
+      </div>
+
+      <h1 class="post-title">Abstract Classes in JavaScript</h1>
+
+      <p>JavaScript does not follow the traditional object-oriented paradigm, but a paradigm called <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Inheritance_and_the_prototype_chain" target="_blank">Prototypical Inheritance</a>, this is a big difference compared to languages like C++, C#, Java or PHP, which has its props and cons, but what generates a big difference is the absence of some functionalities of languages that follow the traditional OOP paradigm, such as abstract classes.</p>
+<p>This was something that bothered me quite a bit until I discovered that this functionality can easily be implemented in JavaScript with just a few lines of code.</p>
+<p>Here are two classes, one called Animal will be an abstract class and cannot be instantiated and another called Dog that would be a concrete class that will inherit from the first one.</p>
+<pre class="hljs"><code><span class="hljs-keyword">class</span> <span class="hljs-title class_">Animal</span> {
+  <span class="hljs-title function_">constructor</span>(<span class="hljs-params">classification</span>) {
+    <span class="hljs-comment">// This check make the trick</span>
+    <span class="hljs-keyword">if</span> (<span class="hljs-keyword">new</span>.<span class="hljs-property">target</span> === <span class="hljs-title class_">Animal</span>) {
+      <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Error</span>(<span class="hljs-string">&#x27;Cannot create an instance of an abstract class.&#x27;</span>)
+    }
+
+    <span class="hljs-variable language_">this</span>.<span class="hljs-property">classification</span> = classification
+  }
+}
+
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Dog</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_ inherited__">Animal</span> {
+}
+
+<span class="hljs-keyword">const</span> dogClassification = {
+  <span class="hljs-attr">kingdom</span>: <span class="hljs-string">&#x27;Animalia&#x27;</span>,
+  <span class="hljs-attr">phylum</span>: <span class="hljs-string">&#x27;Chordata&#x27;</span>,
+  <span class="hljs-attr">order</span>: <span class="hljs-string">&#x27;Carnivora&#x27;</span>,
+  <span class="hljs-attr">family</span>: <span class="hljs-string">&#x27;Canidae&#x27;</span>,
+  <span class="hljs-attr">genus</span>: <span class="hljs-string">&#x27;Canis&#x27;</span>,
+  <span class="hljs-attr">specie</span>: <span class="hljs-string">&#x27;Canis lupus familiaris&#x27;</span>
+}
+
+<span class="hljs-comment">// This will throw an exception</span>
+<span class="hljs-keyword">const</span> animal = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Animal</span>(dogClassification)
+
+<span class="hljs-comment">// This will work</span>
+<span class="hljs-keyword">const</span> dog = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Dog</span>(dogClassification)
+</code></pre>
+<p>The trick, if we want to call it that way, is accomplished with the three lines of code <code>if</code> statement inside the constructor. Basically what the <code>if</code> does is check if the object being created is of type Animal, if so, then an exception is thrown informing that an abstract class cannot be instantiated, otherwise the constructor continues executing and in the end, we will obtain the instance of the concrete class.</p>
+
+    </div>
+
+    <div class="pagination">
+
+      <a href="#" class="top">Top</a>
+    </div>
+  </main>
+
+  <footer>
+    <span>
+      <time datetime="2020-09-16 05:49:07 +0000">2021</time>
+      <span>© <a href="https://www.linkedin.com/in/alvarojoseagamezlicha" target="_blank">Álvaro José Agámez Licha</a>. Made with Love and Passion.</span>.
+    </span>
+  </footer>
+</body>
+
+</html>

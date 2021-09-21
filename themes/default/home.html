@@ -21,15 +21,15 @@
 <body>
   <nav class="nav">
     <div class="nav-container">
-      <a href="https://github.com/aagamezl" target="_blank">
-        <h2 class="nav-title">aagamezl</h2>
+      <a href="{{site.github.url}}" target="_blank">
+        <h2 class="nav-title">{{site.github.username}}</h2>
       </a>
       <ul>
-        {{#navigation}}
+        {{#each navigation}}
         <li>
           <a href="{{permalink}}">{{title}}</a>
         </li>
-        {{/navigation}}
+        {{/each}}
       </ul>
     </div>
   </nav>
@@ -51,9 +51,8 @@
 
   <footer>
     <span>
-      <time datetime="2020-09-16 05:49:07 +0000">2020</time>
-      <span>© {{site.author}}. Made with Love and Passion</span>
-      <a href="https://github.com/aagamezl" target="_blank">aagamezl</a>.
+      <time datetime="2020-09-16 05:49:07 +0000">{{getCurrentYear}}</time>
+      <span>© <a href="{{site.linkedin}}" target="_blank">{{site.author}}</a>. Made with Love and Passion.</span>.
     </span>
   </footer>
 </body>
