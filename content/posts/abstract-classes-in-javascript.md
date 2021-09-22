@@ -7,7 +7,7 @@ overview: JavaScript does not follow the traditional object-oriented paradigm, b
 permalink: abstract-classes-in-javascript.html
 tags:
 - JavaScript
-- Objext Oriented Programming
+- Object Oriented Programming
 - software development
 - Patterns
 ---
