@@ -14,9 +14,10 @@ tags:
 
 # Inception
 
+
 For a long time I had wanted to create my personal blog, I thought about using an online blogging system like dev.to, or using a static generator like Jekyl, Hugo or, the like, but I don't know, none of them motivated me.
 
-So I decided to do what I almost always do, make my own tool to generate my personal blog and at the same time publish it with an Open Source project.
+So I decided to do what I almost always do, make my own tool to generate my personal blog and at the same time publish it with an Open Source project and a <a href="https://www.npmjs.com/package/@devnetic/static-site-generator" target="_blank">NPM package</a>.
 
 The first thing I did was think about how I wanted this generator to work, what functionalities it would have, and how it should be used. Among the main functionality should be something that I give a lot of value, and that is simplicity, both in use and in installation, taking this as the main functionality, I made a list of what I wanted to have.
 

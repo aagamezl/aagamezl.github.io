@@ -48,15 +48,16 @@
   </nav>
 
   <main>
+    <div class="sharethis-sticky-share-buttons"></div>
+
     <div class="post">
       <div class="post-info">
         <div>Written by Álvaro José Agámez Licha</div>
         <span>on </span><time datetime="September 20, 2021">2021-09-20 24:00:00</time>
+        
       </div>
 
       <h1 class="post-title">Abstract Classes in JavaScript</h1>
-
-      <div class="sharethis-sticky-share-buttons"></div>
 
       <p>JavaScript does not follow the traditional object-oriented paradigm, but a paradigm called <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Inheritance_and_the_prototype_chain" target="_blank">Prototypical Inheritance</a>, this is a big difference compared to languages like C++, C#, Java or PHP, which has its props and cons, but what generates a big difference is the absence of some functionalities of languages that follow the traditional OOP paradigm, such as abstract classes.</p>
 <p>This was something that bothered me quite a bit until I discovered that this functionality can easily be implemented in JavaScript with just a few lines of code.</p>
@@ -92,6 +93,8 @@
 </code></pre>
 <p>The trick, if we want to call it that way, is accomplished with the three lines of code <code>if</code> statement inside the constructor. Basically what the <code>if</code> does is check if the object being created is of type Animal, if so, then an exception is thrown informing that an abstract class cannot be instantiated, otherwise the constructor continues executing and in the end, we will obtain the instance of the concrete class.</p>
 
+
+      <div class="sharethis-inline-reaction-buttons"></div>
     </div>
 
     <div class="pagination">
@@ -102,9 +105,10 @@
   </main>
 
   <footer>
+    <div class="sharethis-inline-follow-buttons"></div>
     <span>
       <time datetime="2020-09-16 05:49:07 +0000">2021</time>
-      <span>© <a href="https://www.linkedin.com/in/alvarojoseagamezlicha" target="_blank">Álvaro José Agámez Licha</a>. Made with Love and Passion.</span>.
+      <span>© <a href="https://www.linkedin.com/in/alvarojoseagamezlicha" target="_blank">Álvaro José Agámez Licha</a>. Made with Love and Passion.</span>
     </span>
   </footer>
 </body>

@@ -44,6 +44,8 @@
   </nav>
 
   <main>
+    <div class="sharethis-sticky-share-buttons"></div>
+
     <div class="post">
       {{#if author}}
       <div class="post-info">
@@ -51,14 +53,15 @@
         {{#if date}}
         <span>on </span><time datetime="{{date}}">{{formatDate date}}</time>
         {{/if}}
+        
       </div>
       {{/if}}
 
       <h1 class="post-title">{{title}}</h1>
 
-      <div class="sharethis-sticky-share-buttons"></div>
-
       {{{content}}}
+
+      <div class="sharethis-inline-reaction-buttons"></div>
     </div>
 
     <div class="pagination">
@@ -74,9 +77,10 @@
   </main>
 
   <footer>
+    <div class="sharethis-inline-follow-buttons"></div>
     <span>
       <time datetime="2020-09-16 05:49:07 +0000">{{getCurrentYear}}</time>
-      <span>© <a href="{{site.linkedin}}" target="_blank">{{site.author}}</a>. Made with Love and Passion.</span>.
+      <span>© <a href="{{site.linkedin}}" target="_blank">{{site.author}}</a>. Made with Love and Passion.</span>
     </span>
   </footer>
 </body>

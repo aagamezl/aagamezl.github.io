@@ -48,19 +48,20 @@
   </nav>
 
   <main>
+    <div class="sharethis-sticky-share-buttons"></div>
+
     <div class="post">
       <div class="post-info">
         <div>Written by Álvaro José Agámez Licha</div>
         <span>on </span><time datetime="September 12, 2021">2021-09-12 24:00:00</time>
+        
       </div>
 
       <h1 class="post-title">Static Site Generator - How I Created</h1>
 
-      <div class="sharethis-sticky-share-buttons"></div>
-
       <h1>Inception</h1>
 <p>For a long time I had wanted to create my personal blog, I thought about using an online blogging system like dev.to, or using a static generator like Jekyl, Hugo or, the like, but I don't know, none of them motivated me.</p>
-<p>So I decided to do what I almost always do, make my own tool to generate my personal blog and at the same time publish it with an Open Source project.</p>
+<p>So I decided to do what I almost always do, make my own tool to generate my personal blog and at the same time publish it with an Open Source project and a <a href="https://www.npmjs.com/package/@devnetic/static-site-generator" target="_blank">NPM package</a>.</p>
 <p>The first thing I did was think about how I wanted this generator to work, what functionalities it would have, and how it should be used. Among the main functionality should be something that I give a lot of value, and that is simplicity, both in use and in installation, taking this as the main functionality, I made a list of what I wanted to have.</p>
 <ul>
 <li>Ease of use and installation.</li>
@@ -182,6 +183,8 @@
 <p>Now we can generate the site with the command <code>npx ssg -b</code> or with the command<code> npx ssg -w</code>; the last one I will run the developer's server and it will generate the site as long as the build directory is empty, otherwise it will start with the content that already exists.</p>
 <p>To clean all the contents of the build directory, we can use the command <code>npx ssg -c</code>; this operation is destructive and cannot be undone, so confirmation will be required before the operation is performed. In case we want to skip the commit, we can use the <code>-y</code> modify, so the full command would be <code>npx ssg -c -y</code>.</p>
 
+
+      <div class="sharethis-inline-reaction-buttons"></div>
     </div>
 
     <div class="pagination">
@@ -193,9 +196,10 @@
   </main>
 
   <footer>
+    <div class="sharethis-inline-follow-buttons"></div>
     <span>
       <time datetime="2020-09-16 05:49:07 +0000">2021</time>
-      <span>© <a href="https://www.linkedin.com/in/alvarojoseagamezlicha" target="_blank">Álvaro José Agámez Licha</a>. Made with Love and Passion.</span>.
+      <span>© <a href="https://www.linkedin.com/in/alvarojoseagamezlicha" target="_blank">Álvaro José Agámez Licha</a>. Made with Love and Passion.</span>
     </span>
   </footer>
 </body>
