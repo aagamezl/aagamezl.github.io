@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>[Code Bites] - aagamezl - Traits in JavaScript</title>
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="./css/main.css">
+  <link rel="stylesheet" href="./css/post.css">
+  <link rel="stylesheet" href="./css/code.css">
+  <link rel="stylesheet" href="./css/media-queries.css">
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.7.2/styles/default.min.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Libre+Baskerville:400,400i,700">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" sizes="32x32" href="/tale/assets/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/tale/assets/favicon-16x16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/tale/assets/apple-touch-icon.png">
+
+  <script type='text/javascript'
+    src='https://platform-api.sharethis.com/js/sharethis.js#property=614ac365b1633800191bae65&product=sticky-share-buttons'
+    async='async'>
+  </script>
+</head>
+
+<body>
+  <nav class="nav">
+    <div class="nav-container">
+      <a href="https://github.com/aagamezl" target="_blank">
+        <h2 class="nav-title">aagamezl</h2>
+      </a>
+      <ul>
+        <li>
+          <a href="projects.html">Projects</a>
+        </li>
+        <li>
+          <a href="about.html">About</a>
+        </li>
+        <li>
+          <a href="index.html">Home</a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+  <main>
+    <div class="sharethis-sticky-share-buttons"></div>
+
+    <div class="post">
+      <div class="post-info">
+        <div>Written by Álvaro José Agámez Licha</div>
+        <span>on </span><time datetime="September 29, 2021">2021-09-29 24:00:00</time>
+        
+      </div>
+
+      <h1 class="post-title">Traits in JavaScript</h1>
+
+      <p>As a developer who worked with PHP for many years, I sometimes miss PHP functionalities in JavaScript, one of those functionalities is <a href="https://www.php.net/manual/en/language.oop5.traits.php" target="_blank">Traits</a>, a feature that allows code reuse in a really easy way.</p>
+<p>Code reuse is one of the most important aspects of object-oriented programming, we move the common functionality of classes to methods of the parent class,however, inheritance makes the code very tightly coupled. Therefore, overuse of inheritance may cause the code very hard to maintain.</p>
+<p>A trait is similar to a class, but it is only for grouping methods in a fine-grained and consistent way. The idea is not to instantiate the traits or use the traits directly.</p>
+<p>In the JavaScript implementation that I will present to you today, in addition to grouping methods, you will also be able to group properties, this will allow great flexibility when using traits to reuse code in our applications.  This is in line with the definition of PHP traits, additionally when traits are applied to a class, all the classes that inherit from it will have access to the methods or properties that the traits add to the base class.</p>
+<pre class="hljs"><code><span class="hljs-keyword">const</span> <span class="hljs-title function_">use</span> = (<span class="hljs-params">traitTarget, ...traits</span>) =&gt; {
+  <span class="hljs-keyword">if</span> (traits.<span class="hljs-property">length</span> === <span class="hljs-number">0</span>) {
+    <span class="hljs-keyword">return</span> traitTarget
+  }
+
+  <span class="hljs-keyword">const</span> traitTargetPrototype = <span class="hljs-title class_">Object</span>.<span class="hljs-title function_">getPrototypeOf</span>(
+    <span class="hljs-title class_">Object</span>.<span class="hljs-title function_">getPrototypeOf</span>(traitTarget)
+  )
+
+  traits.<span class="hljs-title function_">forEach</span>(<span class="hljs-function"><span class="hljs-params">trait</span> =&gt;</span> {
+    <span class="hljs-title class_">Object</span>.<span class="hljs-title function_">setPrototypeOf</span>(trait, traitTargetPrototype);
+
+    <span class="hljs-title class_">Object</span>.<span class="hljs-title function_">setPrototypeOf</span>(traitTarget, <span class="hljs-title class_">Object</span>.<span class="hljs-title function_">assign</span>(
+      <span class="hljs-title class_">Object</span>.<span class="hljs-title function_">getPrototypeOf</span>(traitTarget),
+      trait
+    ))
+  })
+
+  <span class="hljs-keyword">return</span> traitTarget
+}
+</code></pre>
+<p>The previous function takes as the first parameter an object that would be the object to which we want to apply the traits and as the second parameter the list of traits that we will apply.</p>
+<p>Next we will see how to use the function to apply a trait; each trait has to be a literal object, which will group the properties and functions to be added:</p>
+<pre class="hljs"><code><span class="hljs-keyword">const</span> <span class="hljs-title class_">SayWorld</span> = {
+  <span class="hljs-attr">message</span>: <span class="hljs-string">&#x27;This is a Trait message&#x27;</span>,
+
+  <span class="hljs-title function_">sayHello</span>(<span class="hljs-params"></span>) {
+    <span class="hljs-variable language_">super</span>.<span class="hljs-title function_">sayHello</span>()
+    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&#x27;World!&#x27;</span>)
+  },
+
+  <span class="hljs-title function_">otherMethod</span>(<span class="hljs-params"></span>) {
+    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&#x27;otherMethod()&#x27;</span>)
+  },
+
+  <span class="hljs-title function_">showMessage</span>(<span class="hljs-params"></span>) {
+    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-variable language_">this</span>.<span class="hljs-property">message</span>)
+  }
+}
+
+<span class="hljs-keyword">const</span> <span class="hljs-title class_">SayBye</span> = {
+  <span class="hljs-title function_">sayBye</span>(<span class="hljs-params"></span>) {
+    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&#x27;Good Bye!&#x27;</span>)
+  },
+}
+
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Base</span> {
+  <span class="hljs-title function_">sayHello</span>(<span class="hljs-params"></span>) {
+    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&#x27;Hello &#x27;</span>)
+  }
+}
+
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">MyHelloWorld</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_ inherited__">Base</span> {
+  <span class="hljs-title function_">constructor</span>(<span class="hljs-params"></span>) {
+    <span class="hljs-variable language_">super</span>()
+
+    <span class="hljs-title function_">use</span>(<span class="hljs-variable language_">this</span>, <span class="hljs-title class_">SayWorld</span>, <span class="hljs-title class_">SayBye</span>)
+  }
+}
+
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">DerivedClass</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_ inherited__">MyHelloWorld</span> {
+}
+
+<span class="hljs-keyword">const</span> instance = <span class="hljs-keyword">new</span> <span class="hljs-title class_">MyHelloWorld</span>()
+instance.<span class="hljs-title function_">sayHello</span>()
+
+<span class="hljs-keyword">const</span> derived = <span class="hljs-keyword">new</span> <span class="hljs-title class_">DerivedClass</span>()
+derived.<span class="hljs-title function_">otherMethod</span>()
+derived.<span class="hljs-title function_">showMessage</span>()
+derived.<span class="hljs-title function_">sayBye</span>()
+</code></pre>
+<p>As we can see, we have a trait that is a literal object that groups a property and 3 methods. The traits are applied in the classes's constructor, passing as the first parameter the object <code>this</code> that represents the current object and 2 different traits.</p>
+<p>The trait pattern is a powerful tool to increase our code reuse, and I hope that my implementation help you to improve your codebases.</p>
+
+
+      <div class="sharethis-inline-reaction-buttons"></div>
+    </div>
+
+    <div class="pagination">
+
+      <a href="#" class="top">Top</a>
+    </div>
+  </main>
+
+  <footer>
+    <div class="sharethis-inline-follow-buttons"></div>
+    <span>
+      <time datetime="2020-09-16 05:49:07 +0000">2021</time>
+      <span>© <a href="https://www.linkedin.com/in/alvarojoseagamezlicha" target="_blank">Álvaro José Agámez Licha</a>. Made with Love and Passion.</span>
+    </span>
+  </footer>
+</body>
+
+</html>
