@@ -3,7 +3,11 @@ layout: post
 title: Traits in JavaScript
 date: September 29, 2021
 author: Álvaro José Agámez Licha
+<<<<<<< HEAD
 overview: As a developer who worked with PHP for many years, I sometimes miss PHP functionalities in JavaScript, one of those functionalities is Traits, a feature that allows code reuse in a really easy way.
+=======
+overview: As a developer who worked with PHP for many years, I sometimes miss PHP functionalities in JavaScript, one of those functionalities is Trais, a feature that allows code reuse in a really easy way.
+>>>>>>> 58f3866bb8e4bc44f40009d77c009b48d5a36482
 permalink: traits-in-javascript.html
 tags:
 - JavaScript
