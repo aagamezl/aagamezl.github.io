@@ -5,8 +5,13 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "dssg --watch",
-    "coverage": "nyc ava"
+    "start": "ssg --watch"
+  },
+  "ts-standard": {
+    "ignore": [
+      "lib",
+      "test"
+    ]
   },
   "repository": {
     "type": "git",

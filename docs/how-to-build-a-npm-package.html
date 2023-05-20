@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>[Code Bites] - aagamezl - How To Build A NPM Package, A Production Ready Tutorial</title>
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="./css/main.css">
+  <link rel="stylesheet" href="./css/post.css">
+  <link rel="stylesheet" href="./css/code.css">
+  <link rel="stylesheet" href="./css/media-queries.css">
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.7.2/styles/default.min.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Libre+Baskerville:400,400i,700">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" sizes="32x32" href="/tale/assets/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/tale/assets/favicon-16x16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/tale/assets/apple-touch-icon.png">
+
+  <script type='text/javascript'
+    src='https://platform-api.sharethis.com/js/sharethis.js#property=614ac365b1633800191bae65&product=sticky-share-buttons'
+    async='async'>
+  </script>
+</head>
+
+<body>
+  <nav class="nav">
+    <div class="nav-container">
+      <a href="https://github.com/aagamezl" target="_blank">
+        <h2 class="nav-title">aagamezl</h2>
+      </a>
+      <ul>
+        <li>
+          <a href="about.html">About</a>
+        </li>
+        <li>
+          <a href="index.html">Home</a>
+        </li>
+        <li>
+          <a href="projects.html">Projects</a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+  <main>
+    <div class="sharethis-sticky-share-buttons"></div>
+
+    <div class="post">
+      <div class="post-info">
+        <div>Written by Álvaro José Agámez Licha</div>
+        <span>on </span><time datetime="October 06, 2021">2021-10-06 24:00:00</time>
+        
+      </div>
+
+      <h1 class="post-title">How To Build A NPM Package, A Production Ready Tutorial</h1>
+
+      <h1>About npm</h1>
+<p><a href="https://www.npmjs.com/" target="_blank">npm</a> is the world's largest software registry. Open source developers from every continent use npm to share and borrow packages, and many organizations use npm to manage private development as well.</p>
+<p>npm consists of three distinct components:</p>
+<ul>
+<li>The website</li>
+<li>The Command Line Interface (CLI)</li>
+<li>The registry</li>
+</ul>
+<p>Use the <a href="https://npmjs.com/" target="_blank">website</a> to discover packages, set up profiles, and manage other aspects of your npm experience. For example, you can set up organizations to manage access to public or private packages.</p>
+<p>The <a href="https://docs.npmjs.com/cli/npm" target="_blank">CLI</a> runs from a terminal, and is how most developers interact with npm.</p>
+<p>The <a href="https://docs.npmjs.com/misc/registry" target="_blank">registry</a> is a large public database of JavaScript software and the meta-information surrounding it.</p>
+<p>In this tutorial I will teach you how to create a npm package with TypeScript, TDD, test coverage, coding standard, coding linting, good practices and basic CI with Github Actions.</p>
+<p>First of all let me make a summary of all the tools that we will use:</p>
+<ul>
+<li><a href="https://github.com/" target="_blank">GitHub</a>: Is a provider of Internet hosting for software development and version control using Git. It offers the distributed version control and source code management functionality of Git, plus its own features.</li>
+<li><a href="https://www.typescriptlang.org/" target="_blank">TypeScript</a>: TypeScript is a strongly typed programming language which builds on JavaScript giving you better tooling at any scale.</li>
+<li><a href="https://github.com/standard/ts-standard" target="_blank">TS Standard</a>: TypeScript Style Guide, with linter and automatic code fixer based on <a href="https://github.com/standard/ts-standard" target="_blank">StandardJS</a>.</li>
+<li><a href="https://github.com/avajs/ava" target="_blank">AVA</a>: A test runner for Node.js with a concise API, detailed error output, embrace of new language features and process isolation that lets you develop with confidence.</li>
+<li><a href="https://istanbul.js.org/" target="_blank">Istanbul</a>: Is a test coverage tool that works with many different frameworks. It tracks which parts of your code are executed by your unit tests.</li>
+<li><a href="https://www.conventionalcommits.org/" target="_blank">Conventional Commits</a>: A specification for adding human and machine readable meaning to commit messages.</li>
+<li><a href="https://github.com/typicode/husky" target="_blank">husky</a>: Modern native Git hooks made easy, husky improves your commits and more 🐶 woof!.</li>
+<li><a href="https://github.com/conventional-changelog/standard-version#readme" target="_blank">Standard Version</a>: A utility for versioning using <a href="https://semver.org/" target="_blank">semver</a> and CHANGELOG generation powered by <a href="https://www.conventionalcommits.org/" target="_blank">Conventional Commits</a>.</li>
+<li><a href="https://verdaccio.org/" target="_blank">Verdaccio</a>: A lightweight private npm proxy registry.</li>
+<li><a href="https://editorconfig.org/" target="_blank">EditorConfig</a>: Helps maintain consistent coding styles for multiple developers working on the same project across various editors and IDEs.</li>
+</ul>
+<p>Ok, this may seem like a fairly extensive list to build an npm package, but trust me, you will see that when we start writing the code everything will fit in easily, since several of these tools we will use without realizing it, such as the linter and others we will use them at specific times, such as when making our commits or releases.</p>
+<h1>What we will build?</h1>
+<p>I will teach you how I build one of my own npm packages, a set of utilities that help me in my other projects.</p>
+<p>The package will consist of a set of small functions written in TypeScript, and for which we will always start by writing the corresponding unit test, following the TDD development process.</p>
+<h1>Setup</h1>
+<p>This config is for Node.js v16.13.0 and NPM 7.0.0 or higher.</p>
+<h2>Git Repository</h2>
+<p>To manage and publish the code of our package we will use <a href="https://github.com/" target="_blank">GitHub</a>, so we must create a new repository.  It's important to add a <code>README</code> file, a <code>.gitignore</code> choosing the <code>Node template</code> and a <code>license</code> (I use MIT). After the repository is created, we must clone it in our development environment.</p>
+<pre class="hljs"><code>$ git <span class="hljs-built_in">clone</span> git@github.com:your_user/utils.git
+</code></pre>
+<h2>Create Package</h2>
+<p>To create out package scaffold we use <code>npm init</code>; we can also create our package under a scope or organization, I personally always use this approach and to do so we must use the <code>--scope</code> param.</p>
+<pre class="hljs"><code>npm init -y --scope=@my-org
+</code></pre>
+<p>After creating our package, which basically means creating our <code>package.json</code>, we need to edit this last file to add our information to the author key, modify the license type and add the keywords that will make the npm registry able to list our package in a better way.</p>
+<h2>EditorConfig</h2>
+<p>To generate my configuration file I use a VS Code extension called <a href="https://marketplace.visualstudio.com/items?itemName=nepaul.editorconfiggenerator" target="_blank">EditorConfigGenerator</a>, which basically is in charge of generating a configuration file with the default values that are the ones that I usually use.  You can change these values to whatever you want, but the truth is that the default values are the most recommended.</p>
+<h2>NPM Packages Dependencies</h2>
+<p>Now we will proceed to install the development dependencies that we will use for our package.</p>
+<pre class="hljs"><code>$ npm i -D typescript @types/node ts-standard ava nyc standard-version @commitlint/{cli,config-conventional,format} husky
+</code></pre>
+<h2>TypeScript Setup</h2>
+<p>First we must create our configuration file for TypeScript:</p>
+<pre class="hljs"><code>$ touch tsconfig.json
+</code></pre>
+<p>Now we must complete the configuration file with a subset of options that will help us to develop our package:</p>
+<pre class="hljs"><code><span class="hljs-punctuation">{</span>
+  <span class="hljs-attr">&quot;compilerOptions&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+    <span class="hljs-attr">&quot;allowJs&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-keyword">false</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;declaration&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-keyword">true</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;declarationDir&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;./lib/types&quot;</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;esModuleInterop&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-keyword">true</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;lib&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span>
+      <span class="hljs-string">&quot;ES2021&quot;</span>
+    <span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;module&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;commonjs&quot;</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;moduleResolution&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;node&quot;</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;noImplicitAny&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-keyword">true</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;outDir&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;./lib&quot;</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;rootDir&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;./src&quot;</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;sourceMap&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-keyword">true</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;strict&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-keyword">true</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;target&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;ES2021&quot;</span>
+  <span class="hljs-punctuation">}</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;include&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span>
+    <span class="hljs-string">&quot;src/**/*.ts&quot;</span>
+  <span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;exclude&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span>
+    <span class="hljs-string">&quot;lib&quot;</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-string">&quot;./node_modules&quot;</span>
+  <span class="hljs-punctuation">]</span>
+<span class="hljs-punctuation">}</span>
+</code></pre>
+<p>Finally we must create a couple of npm scripts to compile our TypeScript code:</p>
+<pre class="hljs"><code>$ npm set-script clean <span class="hljs-string">&quot;rm -rf lib&quot;</span>
+$ npm set-script build <span class="hljs-string">&quot;npm run clean &amp;&amp; tsc&quot;</span>
+$ npm set-script build:watch <span class="hljs-string">&quot;npm run build -- -w&quot;</span>
+</code></pre>
+<h2>Linter Configuration</h2>
+<p>The only settings we need to define for <code>ts-standard</code> are the files we don't want it to check; unfortunately the only way to configure <code>ts-standard</code> is through the <code>package.json</code>, so we must add the following configuration.</p>
+<pre class="hljs"><code><span class="hljs-comment">// package.json</span>
+<span class="hljs-attr">&quot;ts-standard&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+  <span class="hljs-attr">&quot;ignore&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span>
+    <span class="hljs-string">&quot;lib&quot;</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-string">&quot;test&quot;</span>
+  <span class="hljs-punctuation">]</span>
+<span class="hljs-punctuation">}</span><span class="hljs-punctuation">,</span>
+</code></pre>
+<p>Now, we need to add our npm scripts to execute the linter:</p>
+<pre class="hljs"><code>$ npm set-script lint <span class="hljs-string">&quot;ts-standard&quot;</span>
+$ npm set-script lint:fix <span class="hljs-string">&quot;ts-standard --fix&quot;</span>
+</code></pre>
+<p>The <code>lib</code> directory is the directory where our JavaScript is generated after the compilation process.</p>
+<h2>Test Runner Configuration</h2>
+<p>We can configure ava in two different ways, using the <code>package.json</code> or using a configuration file, but for our package we are going to use the configuration file to make our <code>package.json</code> file as clean as possible.</p>
+<pre class="hljs"><code>$ touch ava.config.js
+$ npm set-script <span class="hljs-built_in">test</span> <span class="hljs-string">&quot;ava&quot;</span>
+$ npm set-script <span class="hljs-built_in">test</span>:watch <span class="hljs-string">&quot;ava --watch&quot;</span>
+$ npm set-script coverage <span class="hljs-string">&quot;nyc ava&quot;</span>
+</code></pre>
+<p>Now we can define our test runner settings, by the way, ava doesn't have TypeScript support by default, but this is not a problem, we can activate it ourselves very easily.</p>
+<pre class="hljs"><code><span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> {
+  <span class="hljs-attr">files</span>: [
+    <span class="hljs-string">&#x27;test/**/*.spec.ts&#x27;</span>
+  ],
+  <span class="hljs-attr">extensions</span>: [
+    <span class="hljs-string">&#x27;ts&#x27;</span>
+  ],
+  <span class="hljs-attr">require</span>: [
+    <span class="hljs-string">&#x27;ts-node/register&#x27;</span>
+  ]
+}
+</code></pre>
+<h2>Configure Commitlint</h2>
+<p>Commitlint configuration is very simple, we just have to create its configuration file in the root directory of our package.</p>
+<pre class="hljs"><code><span class="hljs-comment"># Configure commitlint to use conventional config</span>
+$ <span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;module.exports = { extends: [&#x27;@commitlint/config-conventional&#x27;] }&quot;</span> &gt; commitlint.config.js
+</code></pre>
+<h2>Configure Husky Hooks</h2>
+<pre class="hljs"><code>$ npm set-script prepare <span class="hljs-string">&quot;husky install&quot;</span>
+$ npm set-script release <span class="hljs-string">&quot;standard-version&quot;</span>
+$ npm run prepare
+$ npx husky add .husky/pre-commit <span class="hljs-string">&quot;npm run lint&quot;</span>
+$ npx husky add .husky/pre-commit <span class="hljs-string">&quot;npm test&quot;</span>
+$ npx husky add .husky/commit-msg <span class="hljs-string">&quot;npx --no-install commitlint --edit <span class="hljs-variable">$1</span>&quot;</span>
+$ git add .husky/pre-commit
+
+<span class="hljs-comment"># Testing our pre-commit hook</span>
+$ git commit -m <span class="hljs-string">&quot;Keep calm and commit&quot;</span>
+<span class="hljs-comment"># `npm run lint` and `npm test` will run every time you commit</span>
+</code></pre>
+<h1>Time To Code</h1>
+<p>Ok enough setup, it is time for us to start writing the code of our package, as we will use TDD (Test Driven Development), first we will write the first test for the <code>getType</code> function, this function must return the type of the value passed as a parameter.</p>
+<p>Since we are using TDD to develop our package, we are going to start with the minimum test that our function must pass.</p>
+<pre class="hljs"><code><span class="hljs-comment">// test/utils.spec.ts</span>
+<span class="hljs-keyword">import</span> test <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;ava&#x27;</span>
+
+<span class="hljs-keyword">import</span> * <span class="hljs-keyword">as</span> utils <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;./../src&#x27;</span>
+
+<span class="hljs-title function_">test</span>(<span class="hljs-string">&#x27;should returns the correct type&#x27;</span>, <span class="hljs-function"><span class="hljs-params">t</span> =&gt;</span> {
+  t.<span class="hljs-title function_">is</span>(utils.<span class="hljs-title function_">getType</span>(), <span class="hljs-string">&#x27;Undefined&#x27;</span>)
+})
+</code></pre>
+<p>To make our development faster, let's start our test runner in <code>watch</code> mode so that it is monitoring the changes in our tests and code; to do this we must execute the command <code>npm run test:watch</code>.</p>
+<p>Obviously our test will fail because we haven't defined our <code>getType()</code> function yet, so let's do that first.</p>
+<pre class="hljs"><code><span class="hljs-comment">// src/utils.ts</span>
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> getType = (<span class="hljs-attr">value</span>: unknown = <span class="hljs-literal">undefined</span>): <span class="hljs-function"><span class="hljs-params">string</span> =&gt;</span> { }
+</code></pre>
+<p>Ok, we have some progress, now we need to make our first test pass, so let's return the expected value.</p>
+<pre class="hljs"><code><span class="hljs-comment">// src/utils.ts</span>
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> getType = (<span class="hljs-attr">value</span>: unknown = <span class="hljs-literal">undefined</span>): <span class="hljs-function"><span class="hljs-params">string</span> =&gt;</span> {
+  <span class="hljs-keyword">return</span> <span class="hljs-string">&#x27;Undefined&#x27;</span>
+}
+</code></pre>
+<p>Perfect, our first test is passing, although it is quite useless from a practical point of view, so let's speed things up a bit to get to move to the next sections of this tutorial.</p>
+<pre class="hljs"><code><span class="hljs-comment">// test/utils.spec.ts</span>
+<span class="hljs-title function_">test</span>(<span class="hljs-string">&#x27;should returns the correct type&#x27;</span>, <span class="hljs-function"><span class="hljs-params">t</span> =&gt;</span> {
+  t.<span class="hljs-title function_">is</span>(utils.<span class="hljs-title function_">getType</span>({}), <span class="hljs-string">&#x27;Object&#x27;</span>)
+  t.<span class="hljs-title function_">is</span>(utils.<span class="hljs-title function_">getType</span>(<span class="hljs-title class_">Object</span>.<span class="hljs-title function_">create</span>(<span class="hljs-literal">null</span>)), <span class="hljs-string">&#x27;Object&#x27;</span>)
+  t.<span class="hljs-title function_">is</span>(utils.<span class="hljs-title function_">getType</span>([]), <span class="hljs-string">&#x27;Array&#x27;</span>)
+  t.<span class="hljs-title function_">is</span>(utils.<span class="hljs-title function_">getType</span>(<span class="hljs-keyword">new</span> <span class="hljs-title class_">Array</span>()), <span class="hljs-string">&#x27;Array&#x27;</span>)
+  t.<span class="hljs-title function_">is</span>(utils.<span class="hljs-title function_">getType</span>(<span class="hljs-keyword">new</span> <span class="hljs-title class_">Date</span>()), <span class="hljs-string">&#x27;Date&#x27;</span>)
+  t.<span class="hljs-title function_">is</span>(utils.<span class="hljs-title function_">getType</span>(<span class="hljs-title class_">String</span>()), <span class="hljs-string">&#x27;String&#x27;</span>)
+  t.<span class="hljs-title function_">is</span>(utils.<span class="hljs-title function_">getType</span>(<span class="hljs-string">&#x27;&#x27;</span>), <span class="hljs-string">&#x27;String&#x27;</span>)
+  t.<span class="hljs-title function_">is</span>(utils.<span class="hljs-title function_">getType</span>(<span class="hljs-string">&#x27;123&#x27;</span>), <span class="hljs-string">&#x27;String&#x27;</span>)
+  t.<span class="hljs-title function_">is</span>(utils.<span class="hljs-title function_">getType</span>(<span class="hljs-number">123</span>), <span class="hljs-string">&#x27;Number&#x27;</span>)
+  t.<span class="hljs-title function_">is</span>(utils.<span class="hljs-title function_">getType</span>(<span class="hljs-number">123.4</span>), <span class="hljs-string">&#x27;Number&#x27;</span>)
+  t.<span class="hljs-title function_">is</span>(utils.<span class="hljs-title function_">getType</span>(<span class="hljs-literal">true</span>), <span class="hljs-string">&#x27;Boolean&#x27;</span>)
+  t.<span class="hljs-title function_">is</span>(utils.<span class="hljs-title function_">getType</span>(<span class="hljs-literal">false</span>), <span class="hljs-string">&#x27;Boolean&#x27;</span>)
+  t.<span class="hljs-title function_">is</span>(utils.<span class="hljs-title function_">getType</span>(<span class="hljs-title class_">BigInt</span>(<span class="hljs-number">1</span>)), <span class="hljs-string">&#x27;BigInt&#x27;</span>)
+  t.<span class="hljs-title function_">is</span>(utils.<span class="hljs-title function_">getType</span>(<span class="hljs-function">() =&gt;</span> {}), <span class="hljs-string">&#x27;Function&#x27;</span>)
+  t.<span class="hljs-title function_">is</span>(utils.<span class="hljs-title function_">getType</span>(<span class="hljs-title class_">BigInt</span>), <span class="hljs-string">&#x27;Function&#x27;</span>)
+  t.<span class="hljs-title function_">is</span>(utils.<span class="hljs-title function_">getType</span>(<span class="hljs-literal">undefined</span>), <span class="hljs-string">&#x27;Undefined&#x27;</span>)
+  t.<span class="hljs-title function_">is</span>(utils.<span class="hljs-title function_">getType</span>(), <span class="hljs-string">&#x27;Undefined&#x27;</span>)
+})
+</code></pre>
+<pre class="hljs"><code><span class="hljs-comment">// src/utils.ts</span>
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> getType = (<span class="hljs-attr">value</span>: unknown = <span class="hljs-literal">undefined</span>): <span class="hljs-function"><span class="hljs-params">string</span> =&gt;</span> {
+  <span class="hljs-keyword">return</span> <span class="hljs-string">&#x27;Undefined&#x27;</span>
+}
+</code></pre>
+
+
+      <div class="sharethis-inline-reaction-buttons"></div>
+    </div>
+
+    <div class="pagination">
+
+        <a href="graphql-production-ready.html" class="right arrow">&#8594;</a>
+      <a href="#" class="top">Top</a>
+    </div>
+  </main>
+
+  <footer>
+    <div class="sharethis-inline-follow-buttons"></div>
+    <span>
+      <time datetime="2020-09-16 05:49:07 +0000">2022</time>
+      <span>© <a href="https://www.linkedin.com/in/alvarojoseagamezlicha" target="_blank">Álvaro José Agámez Licha</a>. Made with Love and Passion.</span>
+    </span>
+  </footer>
+</body>
+
+</html>
